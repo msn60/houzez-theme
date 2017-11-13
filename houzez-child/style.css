@@ -12,6 +12,12 @@ Text Domain: houzez
 Template: houzez
 */
 
+/*
+=========================
+General styles
+=========================
+*/
+
 /*Defining IranSans Fonts*/
 @font-face {
     font-family: 'irsans-l';
@@ -40,7 +46,19 @@ Template: houzez
     font-weight: 400;
 }
 
-
+/*Change fonts of body to iran sans*/
 body {
     font-family: irsans-m, sans-serif !important;
+}
+
+
+/*
+=========================
+Header styles
+=========================
+*/
+
+/*Change color of phone number in header-3*/
+.header-top-call a {
+    color: white !important;
 }

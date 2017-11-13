@@ -30,7 +30,8 @@ if( ! is_user_logged_in() ) {
         <div class="header-top-call">
             <div class="avatar">
                 <img width="41" height="41" alt="author" src="<?php echo esc_url( $call_us_img ); ?>" class="img-circle">
-                <?php echo esc_attr( houzez_option('hd3_call_us_text') ); ?> <?php echo esc_attr( houzez_option('hd3_phone') ); ?>
+                <!--Edited by Msn-->
+                <?php echo esc_attr( houzez_option('hd3_call_us_text') ); ?> <a href="tel://021<?php echo esc_attr( houzez_option('hd3_phone') ); ?>"><?php echo esc_attr( houzez_option('hd3_phone') ); ?></a>
             </div>
         </div>
         <?php } ?>

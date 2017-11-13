@@ -49,6 +49,87 @@ General styles
 /*Change fonts of body to iran sans*/
 body {
     font-family: irsans-m, sans-serif !important;
+    font-weight: normal !important;
+}
+
+.fave-load-more a, .map-info-box .price h3, .map-info-box .price .rant,.label,
+.label-wrap .label, .page-title .title-head, h1, h2, h3, h4, h5, h6, .splash-search h1,
+.navi ul li, .list-tabs .tabs a, .sort-tab .btn, .item-body .property-title,
+.item-body h2, .price .item-price, .price .item-sub-price, .item-thumb .label-featured,
+figure .label-featured, .item-thumb .thumb-caption .cap-price, figure .thumb-caption .cap-price,
+.detail h3, .detail .cap-price, .item-body .amenities p, #advanced-search .features-list label.title,
+.advanced-search-module .advance-title, .advanced-search-module .advance-trigger,
+.module-title h1, .module-title h2, .module-title h3, .module-title h4, .module-title h5,
+.module-title h6, .houzez-module .module-title-nav h2, .services-module.style2 h3,
+.post-card-item .thumb-caption .post-card-title, .post-card-item .thumb-caption h3,
+.agents-block .block-body .view, .partner-block .block-body .view, .team-name ,
+.block-body .description, .callto-action div h3, .callto-action div h3, .location-block .heading,
+.banner-module .slider-caption .feature-label, .area-title .title-left, .my-property .my-heading,
+.add-title-tab h3, .header-detail h1, .header-detail .item-price , .header-detail .label-wrap .label,
+.media-tabs-list li, .print-header-detail-right .item-price, .form-small .head-left,
+.form-small .head-right, .form-small .form-small-title, .agent-media dt, .agent-media .view,
+.detail-bar h1, .detail-bar h2, .detail-bar h3, .detail-bar h4, .detail-bar h4,
+.detail-bar h5, .detail-bar h6, .detail-bar .detail-tabs li, .article-detail h1, .comments-block h1,
+.article-detail h2, .comments-block h2, .article-detail h3, .comments-block h3,
+.article-detail h4, .comments-block h4, .article-detail h5, .comments-block h5,
+.article-detail h6, .comments-block h6, .article-footer .meta-title, .detail-title .title-left,
+.detail-title-inner .title-inner, .next-prev-block h3,
+.blog-section .blog-section-title, .blog-section .comment-reply-title,
+.author-detail-block .media-body .heading, .comments-block .media-body .heading,
+.accord-block h3, .accord-block .expand-icon, .pagination-main .pagination a ,
+.profile-detail-block .form-small .agent-contact-title,
+.profile-description .agent-title, .agency-description .agent-title,
+.profile-description h3, .agency-description h3, .profile-description h3, .agency-description h3,
+.profile-description p, .agency-description p, .profile-description .position, .agency-description .position,
+.profile-tabs li, .profile-tab-content .title, .reviews-list .media-heading,
+.add-review-block .review-title, .add-rating label, #sidebar .widget .media-heading,
+#sidebar .widget h4, #sidebar .widget .rating .star-text-left,
+#sidebar .widget-download .widget-title,
+#sidebar .widget-categories li, #sidebar .widget_categories li, #sidebar .widget_archive li, #sidebar .widget_meta li, #sidebar .widget_recent_entries li, #sidebar .widget_pages li, #sidebar .widget-pages li, #sidebar .widget_recent_comments li, #sidebar .widget_nav_menu li,
+#sidebar .widget-title , .compare-caption .compare-title, .compare-caption .compare-price,
+.membership-package-inner .membership-package-title, .footer .widget-pages li,
+.footer .widget-news .media-heading, .impress-price , .impress-status,
+.impress-address, .impress-beds-baths-sqft, .beds-baths-sqft, .impress-beds-baths-sqft,
+.beds-baths-sqft, .dsidx-prop-features div, .nav-dropdown li, .splash-header .navi > ul > li,
+.account-action > li, .navi .houzez-megamenu-inner > .sub-menu > li > a,
+.blog-header .navi > ul > li > a, .property-menu a, .banner-search-tabs .search-tab-inner,
+.auto-complete .result p, .auto-complete .media-heading, .auto-complete .search-view,
+.auto-complete .search-footer .search-result-view, .advanced-search .features-list label.title,
+.range-title, .min-price-range, .max-price-range, .tabs p , .list-search form,
+.property-item-v2 .property-title, .property-item-grid .item-price, .item-caption .item-caption-title,
+.item-caption .item-caption-list .cap-price, .search-panel label, .search-panel .range-text .range-title,
+.search-panel .range-text .min-price-range, .search-panel .range-text .max-price-range,
+.search-panel .range-text .min-size-range, .search-panel .range-text .max-size-range,
+.houzez-taber-wrap .houzez-tabs li , .board-header .board-header-left .breadcrumb li,
+.all-msgs-list .msg-unread a, .msg-to-agent-block .agent-title, .msgs-list .attachment,
+.pkgs-status li:first-child, .pkgs-status .plan-link, .steps-nav, .account-block h1,
+.account-block h2, .account-block h3, .account-block h4, .invoice-list th,
+.invoice-total th, .invoice-total .description, .area-title .title-left,
+.my-property .my-heading, .my-property .actions-dropdown a, add-title-tab h3,
+.add-attachment .media-heading, .media-drag-drop .drag-title,
+.membership-package-block li .pkg-status-left, .agent-info-table > thead > tr > th,
+.agent-info-table .agent-info-title, .profile-menu-tabs li, .detail-bar-full .detail-title .title-left,
+.detail-bar-full .detail-sub-title, .detail-bar-full .table-multi-properties tr > th,
+.document-list a, .table-multi-properties th , .table-multi-properties p, .table-popover a,
+.agent-info-block .view-link, .property-reviews .add-rating label, .floor-content .floor-title,
+.print-detail .accord-tab h3, .print-header-detail h1, .profile-contact span, .agency-contact span ,
+.profile-rating span , #houzez-gmap-main .map-btn, #houzez-gmap-main .map-search,
+.compare-table .table-title, .topic-title, .membership-page-title .page-title,
+.pay-step-block.active, .membership-content label, .payment-side-block .side-block-title,
+.pkg-total-list li.total-list-head, .pkg-total-list li:last-child, .stripe-button-el span,
+.package-block .package-title, .package-block .package-price, .widget-download li a,
+.widget-calculate .morg-result span, .widget-calculate .morg-summery .result-title,
+.widget_calendar caption, .widget-current span, .widget-available .title-type,
+.widget-available .info-title, .houzez-impress-carousel-widget .thumb-caption .impress-beds-baths-sqft ,
+.footer-widget .media-heading, .add-rating .caption .label , .screen-reader-text:focus ,
+.post-password-form input[type='submit'], .wpcf7-submit,
+.impress-lead-login input[type='submit'], .IDX-saveProperty, .IDX-resultsDetailsLink a, #IDX-formReset, #IDX-formSubmit,
+.ihf-grid-result-price, #ihf-main-container .title-bar-1, #ihf-main-container .tab-content .title-bar-1,
+#ihf-main-container .chosen-container-single .chosen-single , #ihf-main-container .field-label,
+#ihf-main-container .ihf-label-overlay-money , .dsidx-resp-area label,
+#IDX-featuredAgentWrap #IDX-featuredAgentCaption, .IDX-column2 .IDX-resultsLabel,
+.IDX-resultsSeparatorText, #IDX-searchForm .IDX-control-label {
+    font-weight: 400 !important;
 }
 
 
@@ -62,3 +143,97 @@ Header styles
 .header-top-call a {
     color: white !important;
 }
+
+/*Remove extra border in header-3*/
+.header-section-2 .header-top-social {
+    border-right: none !important;
+}
+
+/*
+=========================
+Sidebar styles
+=========================
+*/
+
+/*Text align center for atlas bar*/
+#media_image-2.widget {
+    text-align: center !important;
+}
+
+/*Change font size and line height of labels on images in sidebars*/
+.widget_houzez_featured_properties .label {
+    font-size: 16px !important;
+    line-height: 22px !important;
+}
+
+/*
+=========================
+Pages styles
+=========================
+*/
+
+/*Change height of home page slider*/
+.banner-slider .item {
+    height: 60vh !important;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .banner-slider .item {
+        height: 60vh !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .banner-slider .item {
+        height: 60vh !important;
+    }
+}
+
+/*Change width of tabs in property listing template*/
+.list-tabs .tabs a {
+    width: 110px !important;
+}
+
+/*Change font size of labels in pages*/
+figure.item-thumb .label {
+    font-size: 16px !important;
+    line-height: 22px !important;
+}
+
+/*Change background color for virtual tour labels*/
+.label.label-default.label-color-104 {
+    background-color: #f81c1c !important;
+}
+
+/*Remove bd, ba and extra information from carousal in home page */
+figcaption ul.list-inline li:nth-child(2), figcaption ul.list-inline li:nth-child(3), figcaption ul.list-inline li:nth-child(4) {
+    display: none !important;
+}
+
+/*
+=========================
+Footer styles
+=========================
+*/
+
+/*Change styles of 4th footers*/
+.footer div#text-2 {
+    padding: 20px;
+    background-color: #2b2b2b;
+    border-radius: 20px;
+}
+
+h4#dolar {
+    color: red !important;
+}
+
+h4#euro {
+    color: yellow !important;
+}
+
+h4#pound {
+    color: #00d0ff !important;
+}
+
+
+

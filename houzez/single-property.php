@@ -30,6 +30,11 @@ $garage = get_post_meta( get_the_ID(), 'fave_property_garage', true );
 $garage_size = get_post_meta( get_the_ID(), 'fave_property_garage_size', true );
 $single_top_area = get_post_meta( get_the_ID(), 'fave_single_top_area', true );
 $single_content_area = get_post_meta( get_the_ID(), 'fave_single_content_area', true );
+/*Edited by Msn*/
+$single_n_info = get_post_meta( get_the_ID(), 'fave_n_info', true );
+$msn_get_info_post = get_post($single_n_info);
+//var_dump($msn_get_info_post);
+
 $property_top_area = houzez_option('prop-top-area');
 $property_layout = houzez_option('prop-content-layout');
 $property_reviews = houzez_option('property_reviews');

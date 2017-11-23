@@ -3907,6 +3907,8 @@ Redux::setSection( $opt_name, array(
                     'walkscore'    => esc_html__('Walkscore', 'houzez'),
                     'stats'        => esc_html__('Stats', 'houzez'),
                     'agent_bottom' => esc_html__('Agent bottom', 'houzez'),
+                    /*Edited by msn*/
+                    'n_info' => esc_html__('N Information', 'houzez'),
                 ),
                 'disabled' => array(
                     'yelp_nearby'  => esc_html__('Near by Places', 'houzez'),

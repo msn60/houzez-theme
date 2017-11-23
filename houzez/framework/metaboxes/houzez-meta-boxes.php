@@ -13,10 +13,11 @@
 
 /********************* META BOX DEFINITIONS ***********************/
 
-add_filter( 'rwmb_meta_boxes', 'houzez_register_metaboxes' );
+add_filter('rwmb_meta_boxes', 'houzez_register_metaboxes');
 
-if( !function_exists( 'houzez_register_metaboxes' ) ) {
-    function houzez_register_metaboxes() {
+if (!function_exists('houzez_register_metaboxes')) {
+    function houzez_register_metaboxes()
+    {
 
         if (!class_exists('RW_Meta_Box')) {
             return;
@@ -37,6 +38,18 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
             }
         }
 
+        /*Get n-info posts - Edited by msn*/
+        $ninfo_array = array(-1 => esc_html__('هیچکدام', 'houzez'));
+        $ninfo_posts = get_posts(array('post_type' => 'n-info', 'posts_per_page' => -1, 'suppress_filters' => 0));
+        if (!empty($ninfo_posts)) {
+            foreach ($ninfo_posts as $ninfo_post) {
+                //var_dump($ninfo_post);
+                $ninfo_array[$ninfo_post->ID] = $ninfo_post->post_title;
+            }
+        }
+        //var_dump($ninfo_array);
+
+
         $agencies_2_array = array(-1 => esc_html__('None', 'houzez'));
         $agencies_array = array('' => esc_html__('None', 'houzez'));
         $agencies_posts = get_posts(array('post_type' => 'houzez_agency', 'posts_per_page' => -1, 'suppress_filters' => 0));
@@ -50,17 +63,17 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         $users_array = array();
         $order = 'user_nicename';
         $fave_users = $wpdb->get_results("SELECT * FROM $wpdb->users ORDER BY $order"); // query users
-        foreach( $fave_users as $user ) : // start users' profile "loop"
+        foreach ($fave_users as $user) : // start users' profile "loop"
             $users_array[$user->ID] = $user->display_name;
         endforeach;
 
-        $prop_status_qry = $wpdb->get_results( "SELECT * from $wpdb->terms as tm, $wpdb->term_taxonomy as tx where tm.term_id=tx.term_id AND tx.taxonomy =  'property_status'" );
+        $prop_status_qry = $wpdb->get_results("SELECT * from $wpdb->terms as tm, $wpdb->term_taxonomy as tx where tm.term_id=tx.term_id AND tx.taxonomy =  'property_status'");
 
         $prop_status = array();
-        foreach( $prop_status_qry as $tax ) {
-            $prop_status[$tax->slug] = $tax->name.' '.'('.$tax->count.')';
+        foreach ($prop_status_qry as $tax) {
+            $prop_status[$tax->slug] = $tax->name . ' ' . '(' . $tax->count . ')';
         }
-        $prop_status_temp = array_unshift( $prop_status, "-- --");
+        $prop_status_temp = array_unshift($prop_status, "-- --");
 
         $prop_states = array();
         $prop_locations = array();
@@ -69,14 +82,14 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         $prop_features = array();
         $prop_neighborhood = array();
 
-        houzez_get_terms_array( 'property_feature', $prop_features );
-        houzez_get_terms_array( 'property_status', $prop_status );
-        houzez_get_terms_array( 'property_type', $prop_types );
-        houzez_get_terms_array( 'property_city', $prop_locations );
-        houzez_get_terms_array( 'property_state', $prop_states );
-        houzez_get_terms_array( 'property_label', $prop_label );
-        houzez_get_terms_array( 'property_area', $prop_neighborhood );
-        houzez_get_terms_array( 'agent_category', $agent_categories );
+        houzez_get_terms_array('property_feature', $prop_features);
+        houzez_get_terms_array('property_status', $prop_status);
+        houzez_get_terms_array('property_type', $prop_types);
+        houzez_get_terms_array('property_city', $prop_locations);
+        houzez_get_terms_array('property_state', $prop_states);
+        houzez_get_terms_array('property_label', $prop_label);
+        houzez_get_terms_array('property_area', $prop_neighborhood);
+        houzez_get_terms_array('agent_category', $agent_categories);
 
         $Countries = array(
             'US' => esc_html__('United States', 'houzez'),
@@ -332,7 +345,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
 
         $countries_array = array();
         if (!empty($Countries)) {
-            foreach ($Countries as $key=>$val ) {
+            foreach ($Countries as $key => $val) {
                 $countries_array[$key] = $val;
             }
         }
@@ -341,7 +354,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         $max_prop_images = houzez_option('max_prop_images');
         $default_country = houzez_option('default_country');
         $enable_multi_agents = houzez_option('enable_multi_agents');
-        if( $enable_multi_agents != 0 ) {
+        if ($enable_multi_agents != 0) {
             $is_multi_agents = true;
         }
         //$hide_add_prop_fields = houzez_option('hide_add_prop_fields');
@@ -425,6 +438,11 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 'listing_layout' => array(
                     'label' => esc_html__('Layout', 'houzez'),
                     'icon' => 'dashicons-laptop',
+                ),
+                /*Edited by Msn*/
+                'n-info' => array(
+                    'label' => esc_html__('اطلاعات محله', 'houzez'),
+                    'icon' => 'dashicons-businessman',
                 ),
                 'private_note' => array(
                     'label' => esc_html__('Private Note', 'houzez'),
@@ -558,9 +576,9 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'desc' => "",
                     'type' => 'date',
                     'js_options' => array(
-                        'dateFormat'      => esc_html__( 'yy-mm-dd', 'houzez' ),
-                        'changeMonth'     => true,
-                        'changeYear'      => true,
+                        'dateFormat' => esc_html__('dd-mm-yy', 'houzez'),
+                        'changeMonth' => true,
+                        'changeYear' => true,
                         'showButtonPanel' => true,
                     ),
                     'std' => "",
@@ -754,7 +772,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'std' => 'no',
                     'options' => array(
                         'yes' => esc_html__('Yes', 'houzez'),
-                        'no'  => esc_html__('No', 'houzez'),
+                        'no' => esc_html__('No', 'houzez'),
                     ),
                     'columns' => 12,
                     'tab' => 'home_slider',
@@ -781,66 +799,66 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'tab' => 'multi_units'
                 ),
                 array(
-                    'id'     => "{$houzez_prefix}multi_units",
+                    'id' => "{$houzez_prefix}multi_units",
                     // Gropu field
-                    'type'   => 'group',
+                    'type' => 'group',
                     // Clone whole group?
-                    'clone'  => true,
+                    'clone' => true,
                     'sort_clone' => true,
                     'tab' => 'multi_units',
                     // Sub-fields
                     'fields' => array(
                         array(
-                            'name' => esc_html__( 'Title', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_title",
+                            'name' => esc_html__('Title', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_title",
                             'type' => 'text',
                             'columns' => 12,
                         ),
                         array(
-                            'name' => esc_html__( 'Price', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_price",
+                            'name' => esc_html__('Price', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_price",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Price Postfix', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_price_postfix",
+                            'name' => esc_html__('Price Postfix', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_price_postfix",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Bedrooms', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_beds",
+                            'name' => esc_html__('Bedrooms', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_beds",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Bathrooms', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_baths",
+                            'name' => esc_html__('Bathrooms', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_baths",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Property Size', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_size",
+                            'name' => esc_html__('Property Size', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_size",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Size Postfix', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_size_postfix",
+                            'name' => esc_html__('Size Postfix', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_size_postfix",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Property Type', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_type",
+                            'name' => esc_html__('Property Type', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_type",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Availability Date', 'houzez' ),
-                            'id'   => "{$houzez_prefix}mu_availability_date",
+                            'name' => esc_html__('Availability Date', 'houzez'),
+                            'id' => "{$houzez_prefix}mu_availability_date",
                             'type' => 'text',
                             'columns' => 6,
                         ),
@@ -855,65 +873,65 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'desc' => esc_html__('Enable/Disable floor plans', 'houzez'),
                     'type' => 'select',
                     'std' => "disable",
-                    'options' => array('disable' => esc_html__( 'Disable', 'houzez' ), 'enable' => esc_html__( 'Enable', 'houzez' )),
+                    'options' => array('disable' => esc_html__('Disable', 'houzez'), 'enable' => esc_html__('Enable', 'houzez')),
                     'columns' => 12,
                     'tab' => 'floor_plans'
                 ),
                 array(
-                    'id'     => 'floor_plans',
+                    'id' => 'floor_plans',
                     // Gropu field
-                    'type'   => 'group',
+                    'type' => 'group',
                     // Clone whole group?
-                    'clone'  => true,
+                    'clone' => true,
                     'sort_clone' => true,
                     'tab' => 'floor_plans',
                     // Sub-fields
                     'fields' => array(
                         array(
-                            'name' => esc_html__( 'Plan Title', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_title",
+                            'name' => esc_html__('Plan Title', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_title",
                             'type' => 'text',
                             'columns' => 12,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Bedrooms', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_rooms",
+                            'name' => esc_html__('Plan Bedrooms', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_rooms",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Bathrooms', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_bathrooms",
+                            'name' => esc_html__('Plan Bathrooms', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_bathrooms",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Price', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_price",
+                            'name' => esc_html__('Plan Price', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_price",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Price Postfix', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_price_postfix",
+                            'name' => esc_html__('Price Postfix', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_price_postfix",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Size', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_size",
+                            'name' => esc_html__('Plan Size', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_size",
                             'type' => 'text',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Image', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_image",
+                            'name' => esc_html__('Plan Image', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_image",
                             'type' => 'file_input',
                             'columns' => 6,
                         ),
                         array(
-                            'name' => esc_html__( 'Plan Description', 'houzez' ),
-                            'id'   => "{$houzez_prefix}plan_description",
+                            'name' => esc_html__('Plan Description', 'houzez'),
+                            'id' => "{$houzez_prefix}plan_description",
                             'type' => 'textarea',
                             'columns' => 12,
                         ),
@@ -951,11 +969,11 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'type' => 'select',
                     'std' => "global",
                     'options' => array(
-                        'global' => esc_html__( 'Global', 'houzez' ),
-                        'v1' => esc_html__( 'Version 1', 'houzez' ),
-                        'v2' => esc_html__( 'Version 2', 'houzez' ),
-                        'v3' => esc_html__( 'Version 3', 'houzez' ),
-                        'v4' => esc_html__( 'Version 4', 'houzez' ),
+                        'global' => esc_html__('Global', 'houzez'),
+                        'v1' => esc_html__('Version 1', 'houzez'),
+                        'v2' => esc_html__('Version 2', 'houzez'),
+                        'v3' => esc_html__('Version 3', 'houzez'),
+                        'v4' => esc_html__('Version 4', 'houzez'),
                         //'v5' => esc_html__( 'Version 5', 'houzez' )
                     ),
                     'columns' => 12,
@@ -968,237 +986,250 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'type' => 'select',
                     'std' => "global",
                     'options' => array(
-                        'global' => esc_html__( 'Global', 'houzez' ),
-                        'simple' => esc_html__( 'Default', 'houzez' ),
-                        'tabs'   => esc_html__( 'Tabs', 'houzez' ),
-                        'tabs-vertical' => esc_html__( 'Tabs Vertical', 'houzez' ),
-                        'v2' => esc_html__( 'Luxury Homes ( Since v1.4.0 )', 'houzez' )
+                        'global' => esc_html__('Global', 'houzez'),
+                        'simple' => esc_html__('Default', 'houzez'),
+                        'tabs' => esc_html__('Tabs', 'houzez'),
+                        'tabs-vertical' => esc_html__('Tabs Vertical', 'houzez'),
+                        'v2' => esc_html__('Luxury Homes ( Since v1.4.0 )', 'houzez')
                     ),
                     'columns' => 12,
                     'tab' => 'listing_layout'
                 ),
+                //Add n-info tab - Edited by msn
+                //n-info
+                array(
+                    'id' => "{$houzez_prefix}n_info",
+                    'name' => esc_html__('وارد کردن اطلاعات محله ملک', 'houzez'),
+                    'desc' => esc_html__('محله مورد نظر خود را انتخاب کنید', 'houzez'),
+                    'type' => 'select',
+                    'std' => "global",
+                    'options' => $ninfo_array,
+                    'columns' => 12,
+                    'tab' => 'n-info'
+                ),
+
 
             )
         );
 
         //if( $hide_add_prop_fields['additional_details'] != 1 ) {
-            $meta_boxes[] = array(
-                'title' => esc_html__('Additional Features', 'houzez'),
-                'pages' => array('property'),
-                'fields' => array(
-                    array(
-                        'id' => "{$houzez_prefix}additional_features_enable",
-                        'name' => esc_html__('Additional Features', 'houzez'),
-                        'desc' => esc_html__('Enable/Disable Additional Features', 'houzez'),
-                        'type' => 'select',
-                        'std' => "disable",
-                        'options' => array('disable' => esc_html__('Disable', 'houzez'), 'enable' => esc_html__('Enable', 'houzez')),
-                        'columns' => 12
-                    ),
-                    array(
-                        'id' => 'additional_features',
-                        'type' => 'group',
-                        'clone' => true,
-                        'sort_clone' => true,
-                        'fields' => array(
-                            array(
-                                'name' => esc_html__('Title', 'houzez'),
-                                'id' => "{$houzez_prefix}additional_feature_title",
-                                'type' => 'text',
-                                'columns' => 6,
-                            ),
-                            array(
-                                'name' => esc_html__('Value', 'houzez'),
-                                'id' => "{$houzez_prefix}additional_feature_value",
-                                'type' => 'text',
-                                'columns' => 6,
-                            )
+        $meta_boxes[] = array(
+            'title' => esc_html__('Additional Features', 'houzez'),
+            'pages' => array('property'),
+            'fields' => array(
+                array(
+                    'id' => "{$houzez_prefix}additional_features_enable",
+                    'name' => esc_html__('Additional Features', 'houzez'),
+                    'desc' => esc_html__('Enable/Disable Additional Features', 'houzez'),
+                    'type' => 'select',
+                    'std' => "disable",
+                    'options' => array('disable' => esc_html__('Disable', 'houzez'), 'enable' => esc_html__('Enable', 'houzez')),
+                    'columns' => 12
+                ),
+                array(
+                    'id' => 'additional_features',
+                    'type' => 'group',
+                    'clone' => true,
+                    'sort_clone' => true,
+                    'fields' => array(
+                        array(
+                            'name' => esc_html__('Title', 'houzez'),
+                            'id' => "{$houzez_prefix}additional_feature_title",
+                            'type' => 'text',
+                            'columns' => 6,
                         ),
+                        array(
+                            'name' => esc_html__('Value', 'houzez'),
+                            'id' => "{$houzez_prefix}additional_feature_value",
+                            'type' => 'text',
+                            'columns' => 6,
+                        )
                     ),
                 ),
-            );
+            ),
+        );
         //}
 
         /* ===========================================================================================
         *   Agent
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'title'  => esc_html__( 'Agent Information', 'houzez' ),
-            'pages'  => array('houzez_agent'),
+            'title' => esc_html__('Agent Information', 'houzez'),
+            'pages' => array('houzez_agent'),
             'fields' => array(
 
                 array(
-                    'name'      => esc_html__('Short Description', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_des',
-                    'type'      => 'textarea',
-                    'desc'      => '',
-                    'columns'   => 12
+                    'name' => esc_html__('Short Description', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_des',
+                    'type' => 'textarea',
+                    'desc' => '',
+                    'columns' => 12
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_email",
-                    'name' => esc_html__( 'Email Address', 'houzez' ),
+                    'name' => esc_html__('Email Address', 'houzez'),
                     'desc' => esc_html__('Provide agent email address, Agent related messages from contact form on property details page, will be sent on this email address. ', 'houzez'),
                     'type' => 'email',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => 'Position',
-                    'id'        => $houzez_prefix . 'agent_position',
-                    'type'      => 'text',
-                    'desc'      => esc_html__('Ex: Founder & CEO.','houzez'),
-                    'columns'   => 6
+                    'name' => 'Position',
+                    'id' => $houzez_prefix . 'agent_position',
+                    'type' => 'text',
+                    'desc' => esc_html__('Ex: Founder & CEO.', 'houzez'),
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Company Name', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_company',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Company Name', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_company',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('License', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_license',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('License', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_license',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Tax Number', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_tax_no',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Tax Number', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_tax_no',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_mobile",
                     'name' => esc_html__("Mobile Number", 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_office_num",
                     'name' => esc_html__("Office Number", 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_fax",
                     'name' => esc_html__("Fax Number", 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_skype",
                     'name' => "Skype",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_website",
                     'name' => esc_html__("Website", 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_facebook",
                     'name' => "Facebook URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_twitter",
                     'name' => "Twitter URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_linkedin",
                     'name' => "LinkedIn URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_googleplus",
                     'name' => "Google Plus URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_youtube",
                     'name' => "Youtube URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_instagram",
                     'name' => "Instagram URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_pinterest",
                     'name' => "Pinterest URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_vimeo",
                     'name' => "Vimeo URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_language",
-                    'name' => esc_html__( 'Language', 'houzez' ),
+                    'name' => esc_html__('Language', 'houzez'),
                     'desc' => esc_html__('ie: english, spanish, french ', 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agent_address",
-                    'name' => esc_html__( 'Address', 'houzez' ),
+                    'name' => esc_html__('Address', 'houzez'),
                     'desc' => esc_html__('Enter your address, it will use for invoices ', 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
-                    'name'    => esc_html__('Company Logo', 'houzez'),
-                    'id'      => $houzez_prefix . 'agent_logo',
+                    'name' => esc_html__('Company Logo', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_logo',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
-                    'columns'   => 12
+                    'desc' => '',
+                    'columns' => 12
                 )
             ),
         );
 
         $meta_boxes[] = array(
-            'title'  => esc_html__( 'Agencies', 'houzez' ),
-            'pages'  => array('houzez_agent'),
+            'title' => esc_html__('Agencies', 'houzez'),
+            'pages' => array('houzez_agent'),
             'context' => 'side',
             'priority' => 'high',
             'fields' => array(
                 array(
-                    'id'        => $houzez_prefix . 'agent_agencies',
-                    'type'      => 'select',
-                    'options'   => $agencies_array,
-                    'desc'      => '',
+                    'id' => $houzez_prefix . 'agent_agencies',
+                    'type' => 'select',
+                    'options' => $agencies_array,
+                    'desc' => '',
                     'columns' => 12,
                     'multiple' => false
                 ),
@@ -1209,27 +1240,27 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Membership
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'title'  => esc_html__( 'Package Details', 'houzez' ),
-            'pages'  => array('houzez_packages'),
+            'title' => esc_html__('Package Details', 'houzez'),
+            'pages' => array('houzez_packages'),
             'fields' => array(
                 array(
                     'id' => "{$houzez_prefix}billing_time_unit",
-                    'name' => esc_html__( 'Billing Period', 'houzez' ),
+                    'name' => esc_html__('Billing Period', 'houzez'),
                     'type' => 'select',
                     'std' => "",
-                    'options' => array( 'Day' => esc_html__('Day', 'houzez' ), 'Week' => esc_html__('Week', 'houzez' ), 'Month' => esc_html__('Month', 'houzez' ), 'Year' => esc_html__('Year', 'houzez' ) ),
+                    'options' => array('Day' => esc_html__('Day', 'houzez'), 'Week' => esc_html__('Week', 'houzez'), 'Month' => esc_html__('Month', 'houzez'), 'Year' => esc_html__('Year', 'houzez')),
                     'columns' => 6,
                 ),
                 array(
                     'id' => "{$houzez_prefix}billing_unit",
-                    'name' => esc_html__( 'Billing Frequency', 'houzez' ),
+                    'name' => esc_html__('Billing Frequency', 'houzez'),
                     'type' => 'text',
                     'std' => "0",
                     'columns' => 6,
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_listings",
-                    'name' => esc_html__( 'How many listings are included?', 'houzez' ),
+                    'name' => esc_html__('How many listings are included?', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
@@ -1237,7 +1268,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 ),
                 array(
                     'id' => "{$houzez_prefix}unlimited_listings",
-                    'name' => esc_html__( "Unlimited listings", 'houzez' ),
+                    'name' => esc_html__("Unlimited listings", 'houzez'),
                     'type' => 'checkbox',
                     'desc' => esc_html__('Unlimited listings ?', 'houzez'),
                     'std' => "",
@@ -1245,37 +1276,37 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_featured_listings",
-                    'name' => esc_html__( 'How many Featured listings are included?', 'houzez' ),
+                    'name' => esc_html__('How many Featured listings are included?', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_price",
-                    'name' => esc_html__( 'Package Price ', 'houzez' ),
+                    'name' => esc_html__('Package Price ', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_stripe_id",
-                    'name' => esc_html__( 'Package stripe id (ex: gold_pack)', 'houzez' ),
+                    'name' => esc_html__('Package stripe id (ex: gold_pack)', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_visible",
-                    'name' => esc_html__( 'Is Visible?', 'houzez' ),
+                    'name' => esc_html__('Is Visible?', 'houzez'),
                     'type' => 'select',
                     'std' => "",
-                    'options' => array( 'yes' => esc_html__( 'Yes', 'houzez' ), 'no' => esc_html__( 'No', 'houzez' ) ),
+                    'options' => array('yes' => esc_html__('Yes', 'houzez'), 'no' => esc_html__('No', 'houzez')),
                     'columns' => 6,
                 ),
 
                 array(
                     'id' => "{$houzez_prefix}package_images",
-                    'name' => esc_html__( 'How many images are included per listing?', 'houzez' ),
+                    'name' => esc_html__('How many images are included per listing?', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
@@ -1283,7 +1314,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 ),
                 array(
                     'id' => "{$houzez_prefix}unlimited_images",
-                    'name' => esc_html__( "Unlimited Images", 'houzez' ),
+                    'name' => esc_html__("Unlimited Images", 'houzez'),
                     'type' => 'checkbox',
                     'desc' => esc_html__('Same as defined in Theme Options', 'houzez'),
                     'std' => "",
@@ -1291,7 +1322,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_tax",
-                    'name' => esc_html__( 'Taxes', 'houzez' ),
+                    'name' => esc_html__('Taxes', 'houzez'),
                     'type' => 'text',
                     'std' => "",
                     'columns' => 6,
@@ -1299,10 +1330,10 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                 ),
                 array(
                     'id' => "{$houzez_prefix}package_popular",
-                    'name' => esc_html__( 'Is Popular/Featured?', 'houzez' ),
+                    'name' => esc_html__('Is Popular/Featured?', 'houzez'),
                     'type' => 'select',
                     'std' => "no",
-                    'options' => array( 'no' => esc_html__( 'No', 'houzez' ), 'yes' => esc_html__( 'Yes', 'houzez' ) ),
+                    'options' => array('no' => esc_html__('No', 'houzez'), 'yes' => esc_html__('Yes', 'houzez')),
                     'columns' => 6,
                 ),
             ),
@@ -1313,41 +1344,41 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Listing Template
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_listing_template',
-            'title'     => esc_html__('Property Listing Advanced Options', 'houzez'),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_listing_template',
+            'title' => esc_html__('Property Listing Advanced Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Default View', 'houzez'),
-                    'id'        => $houzez_prefix . 'default_view',
-                    'type'      => 'select',
-                    'options'   => array(
+                    'name' => esc_html__('Default View', 'houzez'),
+                    'id' => $houzez_prefix . 'default_view',
+                    'type' => 'select',
+                    'options' => array(
                         'list_view' => esc_html__('List View', 'houzez'),
                         'grid_view' => esc_html__('Grid View', 'houzez'),
                         'grid_view_3_col' => esc_html__('Grid View 3 col ( Only for "Property listing full width template" )', 'houzez')
                     ),
-                    'std'       => array( 'list_view' ),
-                    'desc'      => esc_html__('Select default view for listing page( will not work for listing template style 3 )','houzez'),
+                    'std' => array('list_view'),
+                    'desc' => esc_html__('Select default view for listing page( will not work for listing template style 3 )', 'houzez'),
                     'columns' => 6,
                 ),
                 array(
-                    'name'      => esc_html__('Order Properties By', 'houzez'),
-                    'id'        => $houzez_prefix . 'properties_sort',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'd_date'  => esc_html__('Date New to Old', 'houzez'),
-                        'a_date'  => esc_html__('Date Old to New', 'houzez'),
+                    'name' => esc_html__('Order Properties By', 'houzez'),
+                    'id' => $houzez_prefix . 'properties_sort',
+                    'type' => 'select',
+                    'options' => array(
+                        'd_date' => esc_html__('Date New to Old', 'houzez'),
+                        'a_date' => esc_html__('Date Old to New', 'houzez'),
                         'd_price' => esc_html__('Price (High to Low)', 'houzez'),
                         'a_price' => esc_html__('Price (Low to High)', 'houzez'),
                     ),
-                    'std'       => array( 'd_date' ),
-                    'desc'      => '',
+                    'std' => array('d_date'),
+                    'desc' => '',
                     'columns' => 6,
                 ),
                 array(
-                    'id' => $houzez_prefix."listings_tabs",
+                    'id' => $houzez_prefix . "listings_tabs",
                     'name' => esc_html__('Tabs', 'houzez'),
                     'desc' => esc_html__('Enable/Disable listing tabs', 'houzez'),
                     'type' => 'select',
@@ -1356,7 +1387,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 12
                 ),
                 array(
-                    'id' => $houzez_prefix."listings_tab_1",
+                    'id' => $houzez_prefix . "listings_tab_1",
                     'name' => esc_html__('Tabs One', 'houzez'),
                     'desc' => esc_html__('Choose property status for this tab', 'houzez'),
                     'type' => 'select',
@@ -1365,7 +1396,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 6
                 ),
                 array(
-                    'id' => $houzez_prefix."listings_tab_2",
+                    'id' => $houzez_prefix . "listings_tab_2",
                     'name' => esc_html__('Tabs Two', 'houzez'),
                     'desc' => esc_html__('Choose property status for this tab', 'houzez'),
                     'type' => 'select',
@@ -1374,7 +1405,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 6
                 ),
                 array(
-                    'id' => $houzez_prefix."featured_listing",
+                    'id' => $houzez_prefix . "featured_listing",
                     'name' => esc_html__('Featured Listings', 'houzez'),
                     'desc' => esc_html__('Enable/Disable featured listings on top. Ex: Show first (x) listings featured then non-featured', 'houzez'),
                     'type' => 'select',
@@ -1383,7 +1414,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 12
                 ),
                 array(
-                    'id' => $houzez_prefix."featured_prop_no",
+                    'id' => $houzez_prefix . "featured_prop_no",
                     'name' => esc_html__('Number of featured listings to show', 'houzez'),
                     'desc' => "",
                     'type' => 'number',
@@ -1391,7 +1422,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 6
                 ),
                 array(
-                    'id' => $houzez_prefix."prop_no",
+                    'id' => $houzez_prefix . "prop_no",
                     'name' => esc_html__('Number of listings to show', 'houzez'),
                     'desc' => "",
                     'type' => 'number',
@@ -1403,7 +1434,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                  * Only for half map template
                  * */
                 array(
-                    'id' => $houzez_prefix."prop_no_halfmap",
+                    'id' => $houzez_prefix . "prop_no_halfmap",
                     'name' => esc_html__('Number of listings to show', 'houzez'),
                     'desc' => "",
                     'type' => 'number',
@@ -1411,17 +1442,17 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Order Properties By', 'houzez'),
-                    'id'        => $houzez_prefix . 'properties_sort_halfmap',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'd_date'  => esc_html__('Date New to Old', 'houzez'),
-                        'a_date'  => esc_html__('Date Old to New', 'houzez'),
+                    'name' => esc_html__('Order Properties By', 'houzez'),
+                    'id' => $houzez_prefix . 'properties_sort_halfmap',
+                    'type' => 'select',
+                    'options' => array(
+                        'd_date' => esc_html__('Date New to Old', 'houzez'),
+                        'a_date' => esc_html__('Date Old to New', 'houzez'),
                         'd_price' => esc_html__('Price (High to Low)', 'houzez'),
                         'a_price' => esc_html__('Price (Low to High)', 'houzez'),
                     ),
-                    'std'       => array( 'd_date' ),
-                    'desc'      => '',
+                    'std' => array('d_date'),
+                    'desc' => '',
                     'columns' => 6,
                 ),
                 /*
@@ -1431,82 +1462,82 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
 
                 //Filters
                 array(
-                    'name'      => esc_html__('Types', 'houzez'),
-                    'id'        => $houzez_prefix . 'types',
-                    'type'      => 'select',
-                    'options'   => $prop_types,
-                    'desc'      => '',
+                    'name' => esc_html__('Types', 'houzez'),
+                    'id' => $houzez_prefix . 'types',
+                    'type' => 'select',
+                    'options' => $prop_types,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Status', 'houzez' ),
-                    'id'        => $houzez_prefix . 'status',
-                    'type'      => 'select',
-                    'options'   => $prop_status,
-                    'desc'      => '',
+                    'name' => esc_html__('Status', 'houzez'),
+                    'id' => $houzez_prefix . 'status',
+                    'type' => 'select',
+                    'options' => $prop_status,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Labels', 'houzez'),
-                    'id'        => $houzez_prefix . 'labels',
-                    'type'      => 'select',
-                    'options'   => $prop_label,
-                    'desc'      => '',
+                    'name' => esc_html__('Labels', 'houzez'),
+                    'id' => $houzez_prefix . 'labels',
+                    'type' => 'select',
+                    'options' => $prop_label,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('States', 'houzez'),
-                    'id'        => $houzez_prefix . 'states',
-                    'type'      => 'select',
-                    'options'   => $prop_states,
-                    'desc'      => '',
+                    'name' => esc_html__('States', 'houzez'),
+                    'id' => $houzez_prefix . 'states',
+                    'type' => 'select',
+                    'options' => $prop_states,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Cities', 'houzez'),
-                    'id'        => $houzez_prefix . 'locations',
-                    'type'      => 'select',
-                    'options'   => $prop_locations,
-                    'desc'      => '',
+                    'name' => esc_html__('Cities', 'houzez'),
+                    'id' => $houzez_prefix . 'locations',
+                    'type' => 'select',
+                    'options' => $prop_locations,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Neighborhood', 'houzez'),
-                    'id'        => $houzez_prefix . 'area',
-                    'type'      => 'select',
-                    'options'   => $prop_neighborhood,
-                    'desc'      => '',
+                    'name' => esc_html__('Neighborhood', 'houzez'),
+                    'id' => $houzez_prefix . 'area',
+                    'type' => 'select',
+                    'options' => $prop_neighborhood,
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Features', 'houzez' ),
-                    'id'        => $houzez_prefix . 'features',
-                    'type'      => 'select',
-                    'options'   => $prop_features,
-                    'desc'      => '',
+                    'name' => esc_html__('Features', 'houzez'),
+                    'id' => $houzez_prefix . 'features',
+                    'type' => 'select',
+                    'options' => $prop_features,
+                    'desc' => '',
                     'columns' => 12,
                     'multiple' => true
                 ),
                 array(
-                    'name'      => esc_html__('Min Price', 'houzez'),
-                    'id'        => $houzez_prefix . 'min_price',
-                    'type'      => 'number',
-                    'options'   => '',
-                    'desc'      => '',
+                    'name' => esc_html__('Min Price', 'houzez'),
+                    'id' => $houzez_prefix . 'min_price',
+                    'type' => 'number',
+                    'options' => '',
+                    'desc' => '',
                     'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Max Price', 'houzez'),
-                    'id'        => $houzez_prefix . 'max_price',
-                    'type'      => 'number',
-                    'options'   => '',
-                    'desc'      => '',
+                    'name' => esc_html__('Max Price', 'houzez'),
+                    'id' => $houzez_prefix . 'max_price',
+                    'type' => 'number',
+                    'options' => '',
+                    'desc' => '',
                     'columns' => 6
                 )
             )
@@ -1517,27 +1548,27 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Agencies Template
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_agencies_template',
-            'title'     => esc_html__('Agencies Options', 'houzez'),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_agencies_template',
+            'title' => esc_html__('Agencies Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Order By', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_orderby',
-                    'type'      => 'select',
-                    'options'   => array('None' => 'none', 'ID' => 'ID', 'title' => 'title', 'Date' => 'date', 'Random' => 'rand', 'Menu Order' => 'menu_order' ),
-                    'desc'      => '',
+                    'name' => esc_html__('Order By', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_orderby',
+                    'type' => 'select',
+                    'options' => array('None' => 'none', 'ID' => 'ID', 'title' => 'title', 'Date' => 'date', 'Random' => 'rand', 'Menu Order' => 'menu_order'),
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => false
                 ),
                 array(
-                    'name'      => esc_html__('Order', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_order',
-                    'type'      => 'select',
-                    'options'   => array('ASC' => 'ASC', 'DESC' => 'DESC' ),
-                    'desc'      => '',
+                    'name' => esc_html__('Order', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_order',
+                    'type' => 'select',
+                    'options' => array('ASC' => 'ASC', 'DESC' => 'DESC'),
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => false
                 ),
@@ -1548,37 +1579,37 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Agents Template
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_agents_template',
-            'title'     => esc_html__('Agents Options', 'houzez'),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_agents_template',
+            'title' => esc_html__('Agents Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Order By', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_orderby',
-                    'type'      => 'select',
-                    'options'   => array('None' => 'none', 'ID' => 'ID', 'title' => 'title', 'Date' => 'date', 'Random' => 'rand', 'Menu Order' => 'menu_order' ),
-                    'desc'      => '',
+                    'name' => esc_html__('Order By', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_orderby',
+                    'type' => 'select',
+                    'options' => array('None' => 'none', 'ID' => 'ID', 'title' => 'title', 'Date' => 'date', 'Random' => 'rand', 'Menu Order' => 'menu_order'),
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => false
                 ),
                 array(
-                    'name'      => esc_html__('Order', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_order',
-                    'type'      => 'select',
-                    'options'   => array('ASC' => 'ASC', 'DESC' => 'DESC' ),
-                    'desc'      => '',
+                    'name' => esc_html__('Order', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_order',
+                    'type' => 'select',
+                    'options' => array('ASC' => 'ASC', 'DESC' => 'DESC'),
+                    'desc' => '',
                     'columns' => 6,
                     'multiple' => false
                 ),
                 //Filters
                 array(
-                    'name'      => esc_html__('Agent Category', 'houzez'),
-                    'id'        => $houzez_prefix . 'agent_category',
-                    'type'      => 'select',
-                    'options'   => $agent_categories,
-                    'desc'      => '',
+                    'name' => esc_html__('Agent Category', 'houzez'),
+                    'id' => $houzez_prefix . 'agent_category',
+                    'type' => 'select',
+                    'options' => $agent_categories,
+                    'desc' => '',
                     'columns' => 12,
                     'multiple' => true
                 )
@@ -1589,56 +1620,56 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Page Settings
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_default_template_settings',
-            'title'     => esc_html__('Page Template Options', 'houzez' ),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_default_template_settings',
+            'title' => esc_html__('Page Template Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Page Title', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_title',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'show' => esc_html__('Show', 'houzez' ),
-                        'hide' => esc_html__('Hide', 'houzez' )
+                    'name' => esc_html__('Page Title', 'houzez'),
+                    'id' => $houzez_prefix . 'page_title',
+                    'type' => 'select',
+                    'options' => array(
+                        'show' => esc_html__('Show', 'houzez'),
+                        'hide' => esc_html__('Hide', 'houzez')
                     ),
-                    'std'       => array( 'show' ),
-                    'desc'      => '',
+                    'std' => array('show'),
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Page Breadcrumb', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_breadcrumb',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'show' => esc_html__('Show', 'houzez' ),
-                        'hide' => esc_html__('Hide', 'houzez' )
+                    'name' => esc_html__('Page Breadcrumb', 'houzez'),
+                    'id' => $houzez_prefix . 'page_breadcrumb',
+                    'type' => 'select',
+                    'options' => array(
+                        'show' => esc_html__('Show', 'houzez'),
+                        'hide' => esc_html__('Hide', 'houzez')
                     ),
-                    'std'       => array( 'show' ),
-                    'desc'      => '',
+                    'std' => array('show'),
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Page Sidebar', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_sidebar',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'none' => esc_html__('None', 'houzez' ),
-                        'right_sidebar' => esc_html__('Right Sidebar', 'houzez' ),
-                        'left_sidebar' => esc_html__('Left Sidebar', 'houzez' )
+                    'name' => esc_html__('Page Sidebar', 'houzez'),
+                    'id' => $houzez_prefix . 'page_sidebar',
+                    'type' => 'select',
+                    'options' => array(
+                        'none' => esc_html__('None', 'houzez'),
+                        'right_sidebar' => esc_html__('Right Sidebar', 'houzez'),
+                        'left_sidebar' => esc_html__('Left Sidebar', 'houzez')
                     ),
-                    'std'       => array( 'right_sidebar' ),
-                    'desc'      => esc_html__('Choose page Sidebar','houzez'),
+                    'std' => array('right_sidebar'),
+                    'desc' => esc_html__('Choose page Sidebar', 'houzez'),
                 ),
                 array(
-                    'name'      => esc_html__('Page Background', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_background',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'none' => esc_html__('None', 'houzez' ),
-                        'yes' => esc_html__('Yes', 'houzez' )
+                    'name' => esc_html__('Page Background', 'houzez'),
+                    'id' => $houzez_prefix . 'page_background',
+                    'type' => 'select',
+                    'options' => array(
+                        'none' => esc_html__('None', 'houzez'),
+                        'yes' => esc_html__('Yes', 'houzez')
                     ),
-                    'std'       => array( 'yes' ),
-                    'desc'      => esc_html__('Choose page background','houzez'),
+                    'std' => array('yes'),
+                    'desc' => esc_html__('Choose page background', 'houzez'),
                 )
             )
         );
@@ -1647,108 +1678,108 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Page Settings
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_page_settings',
-            'title'     => esc_html__('Page Header Options', 'houzez' ),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_page_settings',
+            'title' => esc_html__('Page Header Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Header Type', 'houzez' ),
-                    'id'        => $houzez_prefix . 'header_type',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'none' => esc_html__('None', 'houzez' ),
-                        'property_slider' => esc_html__('Properties Slider', 'houzez' ),
-                        'rev_slider' => esc_html__('Revolution Slider', 'houzez' ),
-                        'property_map' => esc_html__('Properties Google Map', 'houzez' ),
-                        'static_image' => esc_html__('Image', 'houzez' ),
-                        'video' => esc_html__('Video', 'houzez' ),
-                    ),
-                    'std'       => array( 'none' ),
-                    'desc'      => esc_html__('Choose page header type','houzez'),
-                ),
-                array(
-                    'name'      => esc_html__('Full Screen', 'houzez' ),
-                    'id'        => $houzez_prefix . 'header_full_screen',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'no' => esc_html__('No', 'houzez' ),
-                        'yes' => esc_html__('Yes', 'houzez' )
-                    ),
-                    'std'       => array( 'no' ),
-                    'desc'      => esc_html__('If "Yes" it will fit according to screen size' ,'houzez'),
-                ),
-                array(
-                    'name'      => esc_html__('Full Screen Type', 'houzez' ),
-                    'id'        => $houzez_prefix . 'header_full_screen_type',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'screen_fix' => esc_html__('Screen fix', 'houzez' ),
-                        'auto_fix' => esc_html__('Auto fix', 'houzez' )
-                    ),
-                    'std'       => array( 'screen_fix' ),
-                    'desc'      => '',
-                ),
-                array(
-                    'name'      => esc_html__('Title', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_title',
-                    'type' => 'text',
-                    'std' => '',
-                    'desc' => '',
-                ),
-                array(
-                    'name'      => esc_html__('Subtitle', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_subtitle',
-                    'type' => 'text',
-                    'std' => '',
-                    'desc' => '',
-                ),
-                array(
-                    'name'      => esc_html__('Show Search', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_search',
+                    'name' => esc_html__('Header Type', 'houzez'),
+                    'id' => $houzez_prefix . 'header_type',
                     'type' => 'select',
                     'options' => array(
-                        'no' => esc_html__('No', 'houzez' ),
-                        'yes' => esc_html__('Yes', 'houzez' )
+                        'none' => esc_html__('None', 'houzez'),
+                        'property_slider' => esc_html__('Properties Slider', 'houzez'),
+                        'rev_slider' => esc_html__('Revolution Slider', 'houzez'),
+                        'property_map' => esc_html__('Properties Google Map', 'houzez'),
+                        'static_image' => esc_html__('Image', 'houzez'),
+                        'video' => esc_html__('Video', 'houzez'),
                     ),
-                    'std'       => array( 'no' ),
+                    'std' => array('none'),
+                    'desc' => esc_html__('Choose page header type', 'houzez'),
+                ),
+                array(
+                    'name' => esc_html__('Full Screen', 'houzez'),
+                    'id' => $houzez_prefix . 'header_full_screen',
+                    'type' => 'select',
+                    'options' => array(
+                        'no' => esc_html__('No', 'houzez'),
+                        'yes' => esc_html__('Yes', 'houzez')
+                    ),
+                    'std' => array('no'),
+                    'desc' => esc_html__('If "Yes" it will fit according to screen size', 'houzez'),
+                ),
+                array(
+                    'name' => esc_html__('Full Screen Type', 'houzez'),
+                    'id' => $houzez_prefix . 'header_full_screen_type',
+                    'type' => 'select',
+                    'options' => array(
+                        'screen_fix' => esc_html__('Screen fix', 'houzez'),
+                        'auto_fix' => esc_html__('Auto fix', 'houzez')
+                    ),
+                    'std' => array('screen_fix'),
                     'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Revolution Slider', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_revslider',
+                    'name' => esc_html__('Title', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_title',
+                    'type' => 'text',
+                    'std' => '',
+                    'desc' => '',
+                ),
+                array(
+                    'name' => esc_html__('Subtitle', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_subtitle',
+                    'type' => 'text',
+                    'std' => '',
+                    'desc' => '',
+                ),
+                array(
+                    'name' => esc_html__('Show Search', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_search',
+                    'type' => 'select',
+                    'options' => array(
+                        'no' => esc_html__('No', 'houzez'),
+                        'yes' => esc_html__('Yes', 'houzez')
+                    ),
+                    'std' => array('no'),
+                    'desc' => '',
+                ),
+                array(
+                    'name' => esc_html__('Revolution Slider', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_revslider',
                     'type' => 'select_advanced',
                     'std' => '',
                     'options' => houzez_get_revolution_slider(),
-                    'multiple'    => false,
-                    'placeholder' => esc_html__( 'Select an Slider', 'houzez' ),
+                    'multiple' => false,
+                    'placeholder' => esc_html__('Select an Slider', 'houzez'),
                     'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Image', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_image',
+                    'name' => esc_html__('Image', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_image',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Image Height', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_image_height',
+                    'name' => esc_html__('Image Height', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_image_height',
                     'type' => 'text',
                     'std' => '',
                     'desc' => esc_html__('Default 600px', 'houzez'),
                 ),
                 array(
-                    'name'      => esc_html__('Overlay Color', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_image_overlay',
+                    'name' => esc_html__('Overlay Color', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_image_overlay',
                     'type' => 'color',
                     'std' => '',
                     'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Overlay Color Opacity', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_image_opacity',
+                    'name' => esc_html__('Overlay Color Opacity', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_image_opacity',
                     'type' => 'select',
                     'options' => array(
                         '0' => '0',
@@ -1763,7 +1794,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                         '0.9' => '9',
                         '1' => '10',
                     ),
-                    'std'       => array( '0.5' ),
+                    'std' => array('0.5'),
                     'desc' => '',
                 ),
 
@@ -1783,57 +1814,57 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                     'type' => 'file_input'
                 ),
                 array(
-                    'name'      => esc_html__('Video Overlay', 'houzez' ),
-                    'id'        => $houzez_prefix . 'page_header_video_overlay',
+                    'name' => esc_html__('Video Overlay', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_video_overlay',
                     'type' => 'select',
                     'options' => array(
-                        'yes' => esc_html__('Yes', 'houzez' ),
-                        'no' => esc_html__('No', 'houzez' )
+                        'yes' => esc_html__('Yes', 'houzez'),
+                        'no' => esc_html__('No', 'houzez')
                     ),
-                    'std'       => array( 'yes' ),
+                    'std' => array('yes'),
                     'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Overlay Image', 'houzez'),
-                    'id'        => $houzez_prefix . 'page_header_video_overlay_img',
+                    'name' => esc_html__('Overlay Image', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_video_overlay_img',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Video Image', 'houzez'),
-                    'id'        => $houzez_prefix . 'page_header_video_img',
+                    'name' => esc_html__('Video Image', 'houzez'),
+                    'id' => $houzez_prefix . 'page_header_video_img',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Select City', 'houzez'),
-                    'id'        => $houzez_prefix . 'map_city',
-                    'type'      => 'select',
-                    'options'   => $prop_locations,
-                    'desc'      => esc_html__('Choose city for proeprties on map header, you can select multiple cities or keep all un-select to show from all cities', 'houzez'),
+                    'name' => esc_html__('Select City', 'houzez'),
+                    'id' => $houzez_prefix . 'map_city',
+                    'type' => 'select',
+                    'options' => $prop_locations,
+                    'desc' => esc_html__('Choose city for proeprties on map header, you can select multiple cities or keep all un-select to show from all cities', 'houzez'),
                     'multiple' => true
                 ),
             )
         );
 
         $meta_boxes[] = array(
-            'id'        => 'fave_menu_settings',
-            'title'     => esc_html__('Page Navigation Options', 'houzez' ),
-            'pages'     => array( 'page' ),
+            'id' => 'fave_menu_settings',
+            'title' => esc_html__('Page Navigation Options', 'houzez'),
+            'pages' => array('page'),
             'context' => 'normal',
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Main Menu Transparent ?', 'houzez'),
-                    'id'        => $houzez_prefix . 'main_menu_trans',
-                    'type'      => 'select',
-                    'options'   => array(
-                        'no' => esc_html__('No', 'houzez' ),
-                        'yes' => esc_html__('Yes', 'houzez' )
+                    'name' => esc_html__('Main Menu Transparent ?', 'houzez'),
+                    'id' => $houzez_prefix . 'main_menu_trans',
+                    'type' => 'select',
+                    'options' => array(
+                        'no' => esc_html__('No', 'houzez'),
+                        'yes' => esc_html__('Yes', 'houzez')
                     ),
-                    'std'       => array( 'no' ),
-                    'desc'      => esc_html__('Will only work with header 4, you can choose header 4 from theme options','houzez'),
+                    'std' => array('no'),
+                    'desc' => esc_html__('Will only work with header 4, you can choose header 4 from theme options', 'houzez'),
                 ),
             )
         );
@@ -1844,14 +1875,14 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
 
         $meta_boxes[] = array(
             'id' => 'fave_format_gallery',
-            'title' => esc_html__('Gallery Format', 'houzez' ),
-            'pages' => array( 'post' ),
+            'title' => esc_html__('Gallery Format', 'houzez'),
+            'pages' => array('post'),
             'context' => 'normal',
             'priority' => 'high',
 
             'fields' => array(
                 array(
-                    'name' => esc_html__('Upload Gallery Images: ', 'houzez' ),
+                    'name' => esc_html__('Upload Gallery Images: ', 'houzez'),
                     'desc' => '',
                     'id' => $houzez_prefix . 'gallery_posts',
                     'type' => 'image_advanced',
@@ -1862,38 +1893,38 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
 
         $meta_boxes[] = array(
             'id' => 'fave_format_video',
-            'title' => esc_html__('Video Format', 'houzez' ),
-            'pages' => array( 'post' ),
+            'title' => esc_html__('Video Format', 'houzez'),
+            'pages' => array('post'),
             'context' => 'normal',
             'priority' => 'high',
 
             'fields' => array(
                 array(
-                    'name' => esc_html__('Add video page url: ', 'houzez' ),
+                    'name' => esc_html__('Add video page url: ', 'houzez'),
                     'desc' => '',
                     'id' => $houzez_prefix . 'video_post',
                     'type' => 'text',
                     'std' => '',
-                    'desc'  => __(' - For exmaple https://vimeo.com/120596335', 'houzez' )
+                    'desc' => __(' - For exmaple https://vimeo.com/120596335', 'houzez')
                 )
             )
         );
 
         $meta_boxes[] = array(
             'id' => 'fave_format_audio',
-            'title' => esc_html__('Audio Format', 'houzez' ),
-            'pages' => array( 'post' ),
+            'title' => esc_html__('Audio Format', 'houzez'),
+            'pages' => array('post'),
             'context' => 'normal',
             'priority' => 'high',
 
             'fields' => array(
                 array(
-                    'name' => esc_html__('Add SoundCloud Audio: ', 'houzez' ),
+                    'name' => esc_html__('Add SoundCloud Audio: ', 'houzez'),
                     'desc' => '',
                     'id' => $houzez_prefix . 'audio_post',
                     'type' => 'text',
                     'std' => '',
-                    'desc'  => esc_html__(' - Paste page URL from SoundCloud', 'houzez' )
+                    'desc' => esc_html__(' - Paste page URL from SoundCloud', 'houzez')
                 )
             )
         );
@@ -1904,8 +1935,8 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         * ============================================================================================*/
         $meta_boxes[] = array(
             'id' => 'fave_advanced_search',
-            'title' => esc_html__('Advanced Search', 'houzez' ),
-            'pages' => array( 'page' ),
+            'title' => esc_html__('Advanced Search', 'houzez'),
+            'pages' => array('page'),
             'context' => 'side',
             'priority' => 'high',
 
@@ -1920,8 +1951,8 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                         'global' => esc_html__('Global ( As theme options settings )', 'houzez'),
                         'current_page' => esc_html__('Custom Settings for this Page', 'houzez')
                     ),
-                    'std'   => array( 'global' ),
-                    'desc'  => ''
+                    'std' => array('global'),
+                    'desc' => ''
                 ),
                 array(
                     'name' => esc_html__('Search Options ', 'houzez'),
@@ -1933,8 +1964,8 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                         'show' => esc_html__('Show for This Page', 'houzez'),
                         'hide_show' => esc_html__('Hide but show on scroll', 'houzez'),
                     ),
-                    'std'   => array( 'hide' ),
-                    'desc'  => ''
+                    'std' => array('hide'),
+                    'desc' => ''
                 ),
                 array(
                     'name' => esc_html__('Search Position ', 'houzez'),
@@ -1945,8 +1976,8 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
                         'under_menu' => esc_html__('Under Navigation', 'houzez'),
                         'under_banner' => esc_html__('Under Banners ( Sliders, Map, Video etc )', 'houzez')
                     ),
-                    'std'   => array( 'under_menu' ),
-                    'desc'  => ''
+                    'std' => array('under_menu'),
+                    'desc' => ''
                 )
             )
         );
@@ -1955,49 +1986,49 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Testimonials
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_testimonials',
-            'title'     => esc_html__('Testimonial Details', 'houzez' ),
-            'pages'     => array( 'houzez_testimonials' ),
+            'id' => 'fave_testimonials',
+            'title' => esc_html__('Testimonial Details', 'houzez'),
+            'pages' => array('houzez_testimonials'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Testimonial Text', 'houzez' ),
-                    'id'        => $houzez_prefix . 'testi_text',
-                    'type'      => 'textarea',
-                    'desc'      => esc_html__('Write a testimonial into the textarea.','houzez'),
+                    'name' => esc_html__('Testimonial Text', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_text',
+                    'type' => 'textarea',
+                    'desc' => esc_html__('Write a testimonial into the textarea.', 'houzez'),
                 ),
                 array(
-                    'name'      => esc_html__('By who?', 'houzez'),
-                    'id'        => $houzez_prefix . 'testi_name',
-                    'type'      => 'text',
-                    'desc'      => esc_html__('Name of the client who gave feedback','houzez'),
+                    'name' => esc_html__('By who?', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_name',
+                    'type' => 'text',
+                    'desc' => esc_html__('Name of the client who gave feedback', 'houzez'),
                 ),
                 array(
-                    'name'      => esc_html__('Position', 'houzez'),
-                    'id'        => $houzez_prefix . 'testi_position',
-                    'type'      => 'text',
-                    'desc'      => esc_html__('Ex: Founder & CEO.','houzez'),
+                    'name' => esc_html__('Position', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_position',
+                    'type' => 'text',
+                    'desc' => esc_html__('Ex: Founder & CEO.', 'houzez'),
                 ),
                 array(
-                    'name'      => esc_html__('Company Name', 'houzez'),
-                    'id'        => $houzez_prefix . 'testi_company',
-                    'type'      => 'text',
-                    'desc'      => '',
+                    'name' => esc_html__('Company Name', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_company',
+                    'type' => 'text',
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Photo', 'houzez'),
-                    'id'        => $houzez_prefix . 'testi_photo',
+                    'name' => esc_html__('Photo', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_photo',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
+                    'desc' => '',
                 ),
                 array(
-                    'name'      => esc_html__('Company Logo', 'houzez'),
-                    'id'        => $houzez_prefix . 'testi_logo',
+                    'name' => esc_html__('Company Logo', 'houzez'),
+                    'id' => $houzez_prefix . 'testi_logo',
                     'type' => 'image_advanced',
                     'max_file_uploads' => 1,
-                    'desc'      => '',
+                    'desc' => '',
                 )
             )
         );
@@ -2006,17 +2037,17 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Partners
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'fave_partners',
-            'title'     => esc_html__('Partner Details', 'houzez'),
-            'pages'     => array( 'houzez_partner' ),
+            'id' => 'fave_partners',
+            'title' => esc_html__('Partner Details', 'houzez'),
+            'pages' => array('houzez_partner'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Partner website address', 'houzez'),
-                    'id'        => $houzez_prefix . 'partner_website',
-                    'type'      => 'url',
-                    'desc'      => esc_html__('Enter website address','houzez'),
+                    'name' => esc_html__('Partner website address', 'houzez'),
+                    'id' => $houzez_prefix . 'partner_website',
+                    'type' => 'url',
+                    'desc' => esc_html__('Enter website address', 'houzez'),
                 )
             )
         );
@@ -2025,131 +2056,131 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
         *   Partners
         * ============================================================================================*/
         $meta_boxes[] = array(
-            'id'        => 'houzez_agencies',
-            'title'     => esc_html__('Agency Information', 'houzez'),
-            'pages'     => array( 'houzez_agency' ),
+            'id' => 'houzez_agencies',
+            'title' => esc_html__('Agency Information', 'houzez'),
+            'pages' => array('houzez_agency'),
             'context' => 'normal',
 
-            'fields'    => array(
+            'fields' => array(
                 array(
-                    'name'      => esc_html__('Email', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_email',
-                    'type'      => 'email',
-                    'desc'      => esc_html__('Enter email address','houzez'),
-                    'columns'   => 6
+                    'name' => esc_html__('Email', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_email',
+                    'type' => 'email',
+                    'desc' => esc_html__('Enter email address', 'houzez'),
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Mobile', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_mobile',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Mobile', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_mobile',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Phone Number', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_phone',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Phone Number', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_phone',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Fax', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_fax',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Fax', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_fax',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_language",
-                    'name' => esc_html__( 'Language', 'houzez' ),
+                    'name' => esc_html__('Language', 'houzez'),
                     'desc' => esc_html__('ie: english, spanish, french ', 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Licenses', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_licenses',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Licenses', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_licenses',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Tax Number', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_tax_no',
-                    'type'      => 'text',
-                    'desc'      => '',
-                    'columns'   => 6
+                    'name' => esc_html__('Tax Number', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_tax_no',
+                    'type' => 'text',
+                    'desc' => '',
+                    'columns' => 6
                 ),
                 array(
-                    'name'      => esc_html__('Website Url', 'houzez'),
-                    'id'        => $houzez_prefix . 'agency_web',
-                    'type'      => 'text',
-                    'desc'      => esc_html__('Provide website url.','houzez'),
-                    'columns'   => 6
+                    'name' => esc_html__('Website Url', 'houzez'),
+                    'id' => $houzez_prefix . 'agency_web',
+                    'type' => 'text',
+                    'desc' => esc_html__('Provide website url.', 'houzez'),
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_facebook",
                     'name' => "Facebook URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_twitter",
                     'name' => "Twitter URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_linkedin",
                     'name' => "LinkedIn URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_googleplus",
                     'name' => "Google Plus URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_youtube",
                     'name' => "Youtube URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_instagram",
                     'name' => "Instagram URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_pinterest",
                     'name' => "Pinterest URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_vimeo",
                     'name' => "Vimeo URL",
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 6
+                    'columns' => 6
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_address",
                     'name' => esc_html__('Address', 'houzez'),
                     'type' => 'text',
                     'std' => "",
-                    'columns'   => 12
+                    'columns' => 12
                 ),
                 array(
                     'id' => "{$houzez_prefix}agency_map_address",
@@ -2181,7 +2212,7 @@ if( !function_exists( 'houzez_register_metaboxes' ) ) {
 
 
 // Get revolution sliders
-if( !function_exists('houzez_get_revolution_slider') ) {
+if (!function_exists('houzez_get_revolution_slider')) {
     function houzez_get_revolution_slider()
     {
         global $wpdb;
@@ -2204,23 +2235,25 @@ if( !function_exists('houzez_get_revolution_slider') ) {
 /*-----------------------------------------------------------------------------------*/
 // Get terms array
 /*-----------------------------------------------------------------------------------*/
-if ( ! function_exists( 'houzez_get_terms_array' ) ) {
-    function houzez_get_terms_array( $tax_name, &$terms_array ) {
-        $tax_terms = get_terms( $tax_name, array(
+if (!function_exists('houzez_get_terms_array')) {
+    function houzez_get_terms_array($tax_name, &$terms_array)
+    {
+        $tax_terms = get_terms($tax_name, array(
             'hide_empty' => false,
-        ) );
-        houzez_add_term_children( 0, $tax_terms, $terms_array );
+        ));
+        houzez_add_term_children(0, $tax_terms, $terms_array);
     }
 }
 
 
-if ( ! function_exists( 'houzez_add_term_children' ) ) :
-    function houzez_add_term_children( $parent_id, $tax_terms, &$terms_array, $prefix = '' ) {
-        if ( ! empty( $tax_terms ) && ! is_wp_error( $tax_terms ) ) {
-            foreach ( $tax_terms as $term ) {
-                if ( $term->parent == $parent_id ) {
-                    $terms_array[ $term->slug ] = $prefix . $term->name;
-                    houzez_add_term_children( $term->term_id, $tax_terms, $terms_array, $prefix . '- ' );
+if (!function_exists('houzez_add_term_children')) :
+    function houzez_add_term_children($parent_id, $tax_terms, &$terms_array, $prefix = '')
+    {
+        if (!empty($tax_terms) && !is_wp_error($tax_terms)) {
+            foreach ($tax_terms as $term) {
+                if ($term->parent == $parent_id) {
+                    $terms_array[$term->slug] = $prefix . $term->name;
+                    houzez_add_term_children($term->term_id, $tax_terms, $terms_array, $prefix . '- ');
                 }
             }
         }

@@ -60,6 +60,11 @@ Includes
 
 //require_once get_stylesheet_directory_uri().'/inc/header/header-3.php';
 
+//add_action('init','PostType::make_houzez_neighborhood_info');
+include "app/autoloader.php";
+include "app/classes/class-posttypes.php";
+add_action('init','PostTypes::make_n_info_post_type');
+
 
 /*
 ==================================

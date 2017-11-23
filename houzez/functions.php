@@ -8,6 +8,8 @@
  * @since Houzez 1.0
  * @author Waqas Riaz
  */
+
+
 update_option( 'houzez_activation', 'activated' );
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 global $wp_version;

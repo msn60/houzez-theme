@@ -2382,7 +2382,7 @@ Redux::setSection( $opt_name, array(
             'units'       =>'px',
             'subtitle'    => esc_html__('Select your custom font options for your headers.', 'houzez'),
             'default'     => array(
-                'font-family' => irsans-m',
+                'font-family' => 'irsans-m',
                 'font-weight'  => '400',
                 'google'      => true,
                 'font-size'   => '16px',
@@ -3907,6 +3907,8 @@ Redux::setSection( $opt_name, array(
                     'walkscore'    => esc_html__('Walkscore', 'houzez'),
                     'stats'        => esc_html__('Stats', 'houzez'),
                     'agent_bottom' => esc_html__('Agent bottom', 'houzez'),
+                    /*Edited by msn*/
+                    'n_info' => esc_html__('N Information', 'houzez'),
                 ),
                 'disabled' => array(
                     'yelp_nearby'  => esc_html__('Near by Places', 'houzez'),

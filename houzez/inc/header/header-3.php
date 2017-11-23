@@ -1,18 +1,18 @@
 <?php
 global $current_user;
 wp_get_current_user();
-$userID  =  $current_user->ID;
-$user_custom_picture =  get_the_author_meta( 'fave_author_custom_picture' , $userID );
+$userID = $current_user->ID;
+$user_custom_picture = get_the_author_meta('fave_author_custom_picture', $userID);
 
-$call_us_img = houzez_option( 'hd3_call_us_image', false, 'url' );
+$call_us_img = houzez_option('hd3_call_us_image', false, 'url');
 $main_menu_sticky = houzez_option('main-menu-sticky');
 $top_bar = houzez_option('top_bar');
 
-if( $top_bar != 0 ) {
+if ($top_bar != 0) {
     get_template_part('inc/header/top', 'bar');
 }
 $houzez_user_logout = '';
-if( ! is_user_logged_in() ) {
+if (!is_user_logged_in()) {
     $houzez_user_logout = 'houzez-user-logout';
 }
 ?>
@@ -24,19 +24,22 @@ if( ! is_user_logged_in() ) {
             <?php get_template_part('inc/header/logo'); ?>
         </div>
 
-        <?php get_template_part( 'inc/header/social' ); ?>
+        <?php get_template_part('inc/header/social'); ?>
 
-        <?php if( houzez_option('hd3_callus') != '0' ){ ?>
-        <div class="header-top-call">
-            <div class="avatar">
-                <img width="41" height="41" alt="author" src="<?php echo esc_url( $call_us_img ); ?>" class="img-circle">
-                <!--Edited by Msn-->
-                <?php echo esc_attr( houzez_option('hd3_call_us_text') ); ?> <a href="tel://021<?php echo esc_attr( houzez_option('hd3_phone') ); ?>"><?php echo esc_attr( houzez_option('hd3_phone') ); ?></a>
+        <?php if (houzez_option('hd3_callus') != '0') { ?>
+            <div class="header-top-call">
+                <div class="avatar">
+                    <img width="41" height="41" alt="author" src="<?php echo esc_url($call_us_img); ?>"
+                         class="img-circle">
+                    <!--Edited by Msn-->
+                    <?php echo esc_attr(houzez_option('hd3_call_us_text')); ?> <a
+                            href="tel://021<?php echo esc_attr(houzez_option('hd3_phone')); ?>"><?php echo esc_attr(houzez_option('hd3_phone')); ?></a>
+
+                </div>
             </div>
-        </div>
         <?php } ?>
     </div>
-    <div class="header-bottom"  data-sticky="<?php echo esc_attr( $main_menu_sticky ); ?>">
+    <div class="header-bottom" data-sticky="<?php echo esc_attr($main_menu_sticky); ?>">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
@@ -44,8 +47,8 @@ if( ! is_user_logged_in() ) {
                         <nav class="navi main-nav">
                             <?php
                             // Pages Menu
-                            if ( has_nav_menu( 'main-menu' ) ) :
-                                wp_nav_menu( array (
+                            if (has_nav_menu('main-menu')) :
+                                wp_nav_menu(array(
                                     'theme_location' => 'main-menu',
                                     'container' => '',
                                     'container_class' => '',
@@ -57,11 +60,11 @@ if( ! is_user_logged_in() ) {
                             ?>
                         </nav>
                         <!--start mobile nav-->
-                        <?php get_template_part( 'inc/header/mobile', 'menu' ); ?>
+                        <?php get_template_part('inc/header/mobile', 'menu'); ?>
                         <!--end mobile nav-->
                     </div>
-                    <?php if( class_exists('Houzez_login_register') ): ?>
-                        <?php if( houzez_option('header_login') != 'no' || houzez_option('create_lisiting_enable') != 0 ): ?>
+                    <?php if (class_exists('Houzez_login_register')): ?>
+                        <?php if (houzez_option('header_login') != 'no' || houzez_option('create_lisiting_enable') != 0): ?>
                             <div class="header-right">
                                 <?php get_template_part('inc/header/login', 'nav'); ?>
                             </div>
@@ -73,4 +76,4 @@ if( ! is_user_logged_in() ) {
     </div>
 </header>
 
-<?php get_template_part( 'inc/header/mobile-header' ); ?>
+<?php get_template_part('inc/header/mobile-header'); ?>

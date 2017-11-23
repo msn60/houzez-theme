@@ -14,6 +14,8 @@ global $post,
        $virtual_tour,
        $prop_features,
        $houzez_prop_detail,
+       /*Added by msn*/
+       $msn_get_info_post,
        $prop_description;
 
 $agent_display_option = get_post_meta( $post->ID, 'fave_agent_display_option', true );
@@ -41,6 +43,12 @@ if ($layout): foreach ($layout as $key=>$value) {
         case 'description':
             if( !empty($prop_description) ) {
                 get_template_part('property-details/property', 'description');
+            }
+            break;
+        /*Added by msn*/
+        case 'n_info':
+            if( !empty($msn_get_info_post) ) {
+                get_template_part('property-details/property', 'n-info');
             }
             break;
 

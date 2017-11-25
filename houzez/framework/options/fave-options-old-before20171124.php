@@ -1408,9 +1408,8 @@ Redux::setSection( $opt_name, array(
             'id'       => 'hs-yelp',
             'type'     => 'text',
             'required' => array( 'social-header', '=', '1' ),
-            /*Edited by msn*/
-            'title'    => esc_html__( 'Telegram', 'houzez' ),
-            'subtitle' => esc_html__( 'Enter Telegram profile url', 'houzez' ),
+            'title'    => esc_html__( 'Yelp', 'houzez' ),
+            'subtitle' => esc_html__( 'Enter Yelp profile url', 'houzez' ),
             'desc'     => '',
             'default'  => false,
         )
@@ -7338,9 +7337,8 @@ Redux::setSection( $opt_name, array(
             'id'       => 'fs-yelp',
             'type'     => 'text',
             'required' => array( 'social-footer', '=', '1' ),
-            /*Edited by msn*/
-            'title'    => esc_html__( 'Telegram', 'houzez' ),
-            'subtitle' => esc_html__( 'Enter Telegram profile url', 'houzez' ),
+            'title'    => esc_html__( 'Yelp', 'houzez' ),
+            'subtitle' => esc_html__( 'Enter Yelp profile url', 'houzez' ),
             'desc'     => '',
             'default'  => false,
         ),

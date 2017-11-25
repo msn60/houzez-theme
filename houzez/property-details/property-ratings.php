@@ -81,7 +81,9 @@ if ( sizeof( $get_comments ) != 0 ) {
                         <div class="review-top">
                             <h3 class="media-heading"><a href="#"><?php the_author_meta( 'display_name', $comment->user_id ); ?></a></h3>
                             <p class="review-date" itemprop="datePublished" content="<?php echo date(DATE_W3C, strtotime( $comment->comment_date )) ?>">
-                                <time datetime="<?php echo date(DATE_W3C, strtotime( $comment->comment_date )) ?>"><?php echo date( 'F d, Y', strtotime( $comment->comment_date ) ); ?></time>
+                                <!--Edited by alisoli-->
+                                <time datetime="<?php echo date(DATE_W3C, strtotime( $comment->comment_date )) ?>"><?php echo jdate( 'd F Y', strtotime( $comment->comment_date ) ); ?></time>
+                                <!--<time datetime="<?php /*echo date(DATE_W3C, strtotime( $comment->comment_date )) */?>"><?php /*echo date( 'F d, Y', strtotime( $comment->comment_date ) ); */?></time>-->
                             </p>
                         </div>
 

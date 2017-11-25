@@ -69,7 +69,8 @@ $copy_rights = houzez_option('copy_rights'); ?>
                                 <a target="_blank" href="<?php echo esc_url(houzez_option('fs-pinterest')); ?>"><i class="fa fa-pinterest"></i></a>
                             <?php } ?>
                             <?php if( houzez_option('fs-yelp') != '' ){ ?>
-                                <a target="_blank" href="<?php echo esc_url(houzez_option('fs-yelp')); ?>"><i class="fa fa-yelp"></i></a>
+                                <!--Edited by Msn-->
+                                <a target="_blank" href="<?php echo esc_url(houzez_option('fs-yelp')); ?>"><i class="fa fa-telegram"></i></a>
                             <?php } ?>
                             <?php if( houzez_option('fs-youtube') != '' ){ ?>
                                 <a target="_blank" href="<?php echo esc_url(houzez_option('fs-youtube')); ?>"><i class="fa fa-youtube"></i></a>

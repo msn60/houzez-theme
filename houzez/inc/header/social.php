@@ -28,7 +28,8 @@
                 <a target="_blank" class="btn-youtube" href="<?php echo esc_url(houzez_option('hs-youtube')); ?>"><i class="fa fa-youtube"></i></a>
             <?php } ?>
         <?php if( houzez_option('hs-yelp') != '' ){ ?>
-            <a target="_blank" class="btn-yelp" href="<?php echo esc_url(houzez_option('hs-yelp')); ?>"><i class="fa fa-yelp"></i></a>
+            <!--Edited by msn-->
+            <a target="_blank" class="btn-yelp" href="<?php echo esc_url(houzez_option('hs-yelp')); ?>"><i class="fa fa-telegram"></i></a>
         <?php } ?>
     </ul>
 </div>

@@ -39,110 +39,21 @@ if( isset( $_GET['radius'] ) ) {
         <div class="row">
             <div class="col-sm-12">
                 <form autocomplete="off" method="get" action="<?php echo esc_url( $search_template ); ?>">
-
-
-                        <?php if( $adv_show_hide['status'] != 1 ) { ?>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <select class="selectpicker" id="selected_status_mobile" name="status" data-live-search="false" data-live-search-style="begins">
-                                        <?php
-                                        // All Option
-                                        echo '<option value="">'.$houzez_local['all_status'].'</option>';
-
-                                        $prop_status = get_terms (
-                                            array(
-                                                "property_status"
-                                            ),
-                                            array(
-                                                'orderby' => 'name',
-                                                'order' => 'ASC',
-                                                'hide_empty' => false,
-                                                'parent' => 0
-                                            )
-                                        );
-                                        houzez_hirarchical_options('property_status', $prop_status, $status );
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <?php } ?>
-
-                            <?php if( $adv_show_hide['type'] != 1 ) { ?>
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="form-group">
-                                    <select class="selectpicker" name="type" data-live-search="false" data-live-search-style="begins">
-                                        <?php
-                                        // All Option
-                                        echo '<option value="">'.$houzez_local['all_types'].'</option>';
-
-                                        $prop_type = get_terms (
-                                            array(
-                                                "property_type"
-                                            ),
-                                            array(
-                                                'orderby' => 'name',
-                                                'order' => 'ASC',
-                                                'hide_empty' => false,
-                                                'parent' => 0
-                                            )
-                                        );
-                                        houzez_hirarchical_options('property_type', $prop_type, $type );
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <?php } ?>
-                            <?php if( $adv_show_hide['areas'] != 1 ) { ?>
-                            <div class="col-sm-3 col-xs-6">
-                                <div class="form-group">
-                                    <select name="area" class="selectpicker" data-live-search="false" data-live-search-style="begins">
-                                        <?php
-                                        // All Option
-                                        echo '<option value="">'.$houzez_local['all_areas'].'</option>';
-
-                                        $prop_area = get_terms (
-                                            array(
-                                                "property_area"
-                                            ),
-                                            array(
-                                                'orderby' => 'name',
-                                                'order' => 'ASC',
-                                                'hide_empty' => true,
-                                                'parent' => 0
-                                            )
-                                        );
-                                        houzez_hirarchical_options('property_area', $prop_area, $area );
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <?php } ?>
-
-
-                    <div class="single-search-wrap" style="width:100%">
+                    <div class="single-search-wrap">
                         <div class="single-search-inner advance-btn">
-                            <button style="width:49%;float:right" class="table-cell text-left" type="button"><i class="fa fa-gear">
-                            </i> <span style="display:inline-flex"> پیشرفته</span></button>
-
-
-
-                            <button style="width:49%;float:left" class="table-cell text-right" type="submit"><span style="display:inline-flex">جستجو</span> <i class="fa fa-search"></i></button>
+                            <button class="table-cell text-left" type="button"><i class="fa fa-gear"></i></button>
                         </div>
-
+                        <div class="single-search-inner single-search">
+                            <input type="text" class="form-control" value="<?php echo isset ( $_GET['keyword'] ) ? $_GET['keyword'] : ''; ?>" name="keyword" placeholder="<?php echo $keyword_field_placeholder; ?>">
+                            <div id="auto_complete_ajax" class="auto-complete"></div>
+                        </div>
+                        <div class="single-search-inner single-seach-btn">
+                            <button class="table-cell text-right" type="submit"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
                     <div class="advance-fields">
                         <div class="row">
-
-
-                        <div class="col-sm-12">
-                                <div class="form-group">
-                            <input type="text" class="form-control" value="<?php echo isset ( $_GET['keyword'] ) ? $_GET['keyword'] : ''; ?>" name="keyword" placeholder="<?php echo $keyword_field_placeholder; ?>">
-                            <div id="auto_complete_ajax" class="auto-complete"></div>
-
-
-                            </div></div>
                             <?php if( $enable_radius_search == 1 ) { ?>
                                 <input type="hidden" name="lat" value="<?php echo isset ( $_GET['lat'] ) ? $_GET['lat'] : ''; ?>" id="latitude">
                                 <input type="hidden" name="lng" value="<?php echo isset ( $_GET['lng'] ) ? $_GET['lng'] : ''; ?>" id="longitude">
@@ -237,7 +148,83 @@ if( isset( $_GET['radius'] ) ) {
                             </div>
                             <?php } ?>
 
+                            <?php if( $adv_show_hide['areas'] != 1 ) { ?>
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    <select name="area" class="selectpicker" data-live-search="false" data-live-search-style="begins">
+                                        <?php
+                                        // All Option
+                                        echo '<option value="">'.$houzez_local['all_areas'].'</option>';
 
+                                        $prop_area = get_terms (
+                                            array(
+                                                "property_area"
+                                            ),
+                                            array(
+                                                'orderby' => 'name',
+                                                'order' => 'ASC',
+                                                'hide_empty' => true,
+                                                'parent' => 0
+                                            )
+                                        );
+                                        houzez_hirarchical_options('property_area', $prop_area, $area );
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php } ?>
+
+                            <?php if( $adv_show_hide['status'] != 1 ) { ?>
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker" id="selected_status_mobile" name="status" data-live-search="false" data-live-search-style="begins">
+                                        <?php
+                                        // All Option
+                                        echo '<option value="">'.$houzez_local['all_status'].'</option>';
+
+                                        $prop_status = get_terms (
+                                            array(
+                                                "property_status"
+                                            ),
+                                            array(
+                                                'orderby' => 'name',
+                                                'order' => 'ASC',
+                                                'hide_empty' => false,
+                                                'parent' => 0
+                                            )
+                                        );
+                                        houzez_hirarchical_options('property_status', $prop_status, $status );
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php } ?>
+
+                            <?php if( $adv_show_hide['type'] != 1 ) { ?>
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker" name="type" data-live-search="false" data-live-search-style="begins">
+                                        <?php
+                                        // All Option
+                                        echo '<option value="">'.$houzez_local['all_types'].'</option>';
+
+                                        $prop_type = get_terms (
+                                            array(
+                                                "property_type"
+                                            ),
+                                            array(
+                                                'orderby' => 'name',
+                                                'order' => 'ASC',
+                                                'hide_empty' => false,
+                                                'parent' => 0
+                                            )
+                                        );
+                                        houzez_hirarchical_options('property_type', $prop_type, $type );
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php } ?>
 
                             <?php if( $adv_show_hide['beds'] != 1 ) { ?>
                             <div class="col-sm-3 col-xs-6">

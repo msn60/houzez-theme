@@ -15,6 +15,20 @@ $disable_agent = houzez_option('disable_agent');
 $disable_date = houzez_option('disable_date');
 $infobox_trigger = '';
 
+/*Edited by Msn*/
+$agent_display_option = get_post_meta( $post->ID, 'fave_agent_display_option', true );
+$prop_agent_display = get_post_meta( $post->ID, 'fave_agents', true );
+$msn_show_phone = '02122832004';
+if( $prop_agent_display != '-1' && $agent_display_option == 'agent_info' ) {
+    $prop_agent_id = get_post_meta( $post->ID, 'fave_agents', true );
+    $prop_agent_mobile = get_post_meta( $prop_agent_id, 'fave_agent_mobile', true );
+    $msn_show_phone = $prop_agent_mobile;
+} elseif( $agent_display_option == 'agency_info' ) {
+    $msn_show_phone = '02122832004';
+} elseif( $agent_display_option == 'author_info' ) {
+    $msn_show_phone = '02122832004';
+}
+
 if( is_page_template( 'template/property-listings-map.php' ) ) { $infobox_trigger = 'infobox_trigger'; }
 ?>
 
@@ -67,8 +81,13 @@ if( is_page_template( 'template/property-listings-map.php' ) ) { $infobox_trigge
 
                 <?php if( $disable_agent != 0 || $disable_date != 0 ) { ?>
                 <div class="info-row date hide-on-grid">
+                    <!--Edited by msn-->
                     <?php if( !empty( $listing_agent ) && $disable_agent != 0 ) { ?>
-                        <p class="prop-user-agent"><i class="fa fa-user"></i> <?php echo implode( ', ', $listing_agent ); ?></p>
+                        <p class="prop-user-agent">
+                            <a class="msn-agent-phone" href="tel://<?php echo $msn_show_phone; ?>"><i class="fa fa fa-phone"><span>تماس</span></i></a>
+                            <i class="fa fa-user"></i> <?php echo implode( ', ', $listing_agent ); ?>
+                            <?php /*echo $prop_agent_mobile;*/?>
+                        </p>
                     <?php } ?>
                     <?php if( $disable_date != 0 ) { ?>
                         <p><i class="fa fa-calendar"></i><?php printf( __( '%s ago', 'houzez' ), human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ) ); ?></p>
@@ -107,8 +126,13 @@ if( is_page_template( 'template/property-listings-map.php' ) ) { $infobox_trigge
         <div class="item-foot date hide-on-list">
             <?php if( $disable_agent != 0 ) { ?>
                 <div class="item-foot-left">
+                    <!--Edited by msn-->
                     <?php if( !empty( $listing_agent ) ) { ?>
-                        <p class="prop-user-agent"><i class="fa fa-user"></i> <?php echo implode( ', ', $listing_agent ); ?></p>
+                        <p class="prop-user-agent">
+                            <a class="msn-agent-phone" href="tel://<?php echo $msn_show_phone; ?>"><i class="fa fa fa-phone"><span>تماس</span></i></a>
+                            <i class="fa fa-user"></i> <?php echo implode( ', ', $listing_agent ); ?>
+                            <?php /*echo $prop_agent_mobile;*/?>
+                        </p>
                     <?php } ?>
                 </div>
             <?php } ?>

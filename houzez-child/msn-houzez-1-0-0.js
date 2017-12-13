@@ -3,7 +3,7 @@
         var $window = $(window);
         $window.on('load',function () {
             /*Only for test my js file*/
-            console.log('salam gholam');
+            /*console.log('salam gholam');*/
 
         });
 

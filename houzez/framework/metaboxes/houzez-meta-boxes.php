@@ -717,6 +717,15 @@ if (!function_exists('houzez_register_metaboxes')) {
                     'columns' => 12,
                     'tab' => 'video',
                 ),
+                /*Edited by msn*/
+                array(
+                    'id' => "{$houzez_prefix}msn_aparat_video_url",
+                    'name' => esc_html__('آدرس ویدئو در آپارات:', 'houzez'),
+                    'desc' => esc_html__('کد داده شده در سایت آپارات را در این بخش وارد کنید', 'houzez'),
+                    'type' => 'text',
+                    'columns' => 12,
+                    'tab' => 'video',
+                ),
 
                 //Virtual Tour
                 array(

@@ -220,7 +220,11 @@ if( !function_exists('houzez_submit_listing') ) {
             if( isset( $_POST['prop_video_url'] ) ) {
                 update_post_meta( $prop_id, 'fave_video_url', sanitize_text_field( $_POST['prop_video_url'] ) );
             }
-
+            // Property Aparat Video Url
+            /*Edited by msn*/
+            if( isset( $_POST['prop_msn_aparat_video_url'] ) ) {
+                update_post_meta( $prop_id, 'fave_msn_aparat_video_url',  $_POST['prop_msn_aparat_video_url'] );
+            }
             // property video image - in case of update
             $property_video_image = "";
             $property_video_image_id = 0;
@@ -641,6 +645,12 @@ if( !function_exists('save_property_as_draft') ) {
             // Property Video Url
             if( isset( $_POST['prop_video_url'] ) ) {
                 update_post_meta( $prop_id, 'fave_video_url', sanitize_text_field( $_POST['prop_video_url'] ) );
+            }
+
+            // Property Aparat Video Url
+            /*Edited by msn*/
+            if( isset( $_POST['prop_msn_aparat_video_url'] ) ) {
+                update_post_meta( $prop_id, 'fave_msn_aparat_video_url',  $_POST['prop_msn_aparat_video_url'] );
             }
 
             // property video image - in case of update

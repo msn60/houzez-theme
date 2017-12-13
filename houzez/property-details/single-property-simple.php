@@ -11,6 +11,8 @@ global $post,
        $multi_units,
        $prop_video_img,
        $prop_video_url,
+       /*Edited by msn*/
+       $prop_msn_aparat_video_url,
        $virtual_tour,
        $prop_features,
        $houzez_prop_detail,
@@ -20,7 +22,6 @@ global $post,
 
 $agent_display_option = get_post_meta( $post->ID, 'fave_agent_display_option', true );
 $enableDisable_agent_forms = houzez_option('agent_forms');
-
 $prop_detail_nav = houzez_option('prop-detail-nav');
 $prop_content_layout = houzez_option('prop-content-layout');
 $hide_yelp = houzez_option('houzez_yelp');

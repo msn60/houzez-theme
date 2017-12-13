@@ -13,6 +13,8 @@ global $post,
        $floor_plans,
        $prop_video_img,
        $prop_video_url,
+       /*Edited by msn*/
+       $prop_msn_aparat_video_url,
        $virtual_tour,
        $prop_features,
        $houzez_prop_detail,
@@ -81,7 +83,8 @@ if( $prop_detail_nav != 'no' && $property_layout == "simple" ) { ?>
                             break;
 
                         case 'video':
-                            if( !empty( $prop_video_url ) && !empty($prop_video_img)) {
+                            /*Edited by msn*/
+                            if( (!empty( $prop_video_url ) && !empty($prop_video_img)) ) {
                                 echo '<li><a class="target" href="#video">' . esc_html__('Video', 'houzez') . '</a></li>';
                             }
                             break;

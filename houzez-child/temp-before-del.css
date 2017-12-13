@@ -269,42 +269,11 @@ Property page styles
     line-height: 34px !important;
 }
 
-/*Change head title style for second price*/
-.header-detail .item-sub-price .item-price {
-    display: inline-block !important;
-    margin-top: 10px;
-}
-
-/*Change font size of item sub price - equal to primary price*/
-.header-detail .item-sub-price {
-    font-size: 30px !important;
-    color: black !important;
-}
-
-/*Add extra margin bottom for item price in single property page*/
-.header-detail .item-price {
-    margin-bottom: 20px !important;
-}
-
-/*Add margin for Aparat video*/
-.aparat-video-block {
-    margin-bottom: 50px !important;
-}
-
 /*
 =========================
 Listing pages styles
 =========================
 */
-/*Change width of body-left table in listings results*/
-.property-item .body-left {
-    width: 60% !important;
-}
-
-/*Change width of body-right table in listings results*/
-.property-item .body-right {
-    width: 40% !important;
-}
 
 /*Adding some styles to change phone call icon and its writing*/
 a.msn-agent-phone {
@@ -383,15 +352,6 @@ Ninja popup styles
 Responsive styles
 =========================
 */
-@media (max-width: 991px) and (min-width: 768px){
-
-    /*Change font size of item sub price - equal to primary price*/
-    .header-detail .item-sub-price {
-        font-size: 24px !important;
-        line-height: 28px;
-    }
-}
-
 
 @media (max-width: 767px) {
 
@@ -413,12 +373,6 @@ Responsive styles
     /*Solve problem of doesn't showing phone number of agent in mobile version*/
     .agent-media span span:last-child {
         display: inline-block;
-    }
-
-    /*Change font size of item sub price - equal to primary price*/
-    .header-detail .item-sub-price {
-        font-size: 18px !important;
-        line-height: 20px;
     }
 
 }

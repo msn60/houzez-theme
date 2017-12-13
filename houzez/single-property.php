@@ -10,6 +10,8 @@ $prop_address         = get_post_meta( get_the_ID(), 'fave_property_map_address'
 $prop_featured        = get_post_meta( get_the_ID(), 'fave_featured', true );
 $prop_video_img       = get_post_meta( get_the_ID(), 'fave_video_image', true );
 $prop_video_url       = get_post_meta( get_the_ID(), 'fave_video_url', true );
+/*Edited by msn*/
+$prop_msn_aparat_video_url = get_post_meta( get_the_ID(), 'fave_msn_aparat_video_url', true );
 $property_location    = get_post_meta( get_the_ID(), 'fave_property_location',true);
 $virtual_tour         = get_post_meta( $post->ID, 'fave_virtual_tour', true );
 $property_map         = get_post_meta( get_the_ID(), 'fave_property_map',true);

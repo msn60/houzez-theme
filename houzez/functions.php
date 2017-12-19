@@ -397,7 +397,8 @@ if( !function_exists('houzez_widgets_init') ) {
 	}
 }
 
-if ( !current_user_can('administrator') && !is_admin() ) {
+/*Edited by msn*/
+if ( !current_user_can('administrator') && !current_user_can('amlak') && !is_admin() ) {
 	show_admin_bar( false );
 }
 

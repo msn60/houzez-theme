@@ -291,6 +291,16 @@ Property page styles
     margin-bottom: 50px !important;
 }
 
+/*Change some styles in virtual tour plugin*/
+.ipnrm.ipnrm-default.ipnrm-scene-thumbs-h .ipnrm-scene-thumbs, .ipnrm.ipnrm-theme-default.ipnrm-scene-thumbs-h .ipnrm-scene-thumbs {
+    height: 55px !important;
+    bottom: 12% !important;
+}
+
+.ipnrm.ipnrm-default.ipnrm-scene-thumbs-h .ipnrm-scene-thumbs .ipnrm-scene-thumb .ipnrm-scene-thumb-img, .ipnrm.ipnrm-theme-default.ipnrm-scene-thumbs-h .ipnrm-scene-thumbs .ipnrm-scene-thumb .ipnrm-scene-thumb-img {
+    height: 40px !important;
+}
+
 /*
 =========================
 Listing pages styles
